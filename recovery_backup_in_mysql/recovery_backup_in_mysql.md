@@ -1,12 +1,12 @@
-# <center>Banco de Dados - Recovery e Backup 
-
+# <center>Banco de Dados - Recovery e Backup
 
 ## Histórico de Versão
 
-| Data       | Versão | Descrição                | Autor(es)     | 
-| ---------- | ------ | ------------------------ | ------------- | 
-| 07/05/2022 | 0.1    | Criação do documento     | Pedro Helias | 
-| 09/05/2022 | 0.2    | Complemetando o conteúdo e add imagens    | Pedro Helias | 
+| Data       | Versão | Descrição                              | Autor(es)    |
+| ---------- | ------ | -------------------------------------- | ------------ |
+| 07/05/2022 | 0.1    | Criação do documento                   | Pedro Helias |
+| 09/05/2022 | 0.2    | Complemetando o conteúdo e add imagens | Pedro Helias |
+| 11/05/2022 | 0.3    | Finalização do documento e primeira versão | Pedro Helias |
 
 <div align="justify">
 
@@ -32,15 +32,15 @@ disponibilidade para os dados.
 
 ### 2.1.1 Base de Dados
 
-Para esse projeto, será utilizada a base de dados sobre jogos, <b>Metacritic</b>, encontrada em <a h='../bases/baseDados_metacritic/baseDados_metacritic_jogos.sql'>base de dados</a>. 
+Para esse projeto, será utilizada a base de dados sobre jogos, <b>Metacritic</b>, encontrada em <a h='../bases/baseDados_metacritic/baseDados_metacritic_jogos.sql'>base de dados</a>.
 
 ### 2.1.2 MySQL
 
-Será utilizando o MySQL, para criação de bases, recovery, backup e estruturação de bases. 
+Será utilizando o MySQL, para criação de bases, recovery, backup e estruturação de bases.
 
 ## 2.2 Execução
 
-Como se trata de uma base de dados recebida e que sofreu backup anteriormente, é necessário executar um processo de <b>Recovery</b>. Para isso, utiliza-se a expressão: 
+Como se trata de uma base de dados recebida e que sofreu backup anteriormente, é necessário executar um processo de <b>Recovery</b>. Para isso, utiliza-se a expressão:
 
 ```
 mysql -u root -p base-de-dados < nome-do-arquivo.sql
@@ -51,7 +51,6 @@ A expressão acima indica <i>base-de-dados</i> como a base utilizada para armaze
 
 A partir disso, é possível executar o processo de recovery e obter uma base pronta para uso e estudo. Um espelho da execução dessa parte do projeto, encontra-se abaixo:
 
-
 <div align="center">
 
  <div>
@@ -60,9 +59,7 @@ A partir disso, é possível executar o processo de recovery e obter uma base pr
       </div>
    </div>
 
-
 <img src="https://github.com/pedrohelias/dataBase_studies/blob/main/imagens/recovery_backup_in_mysql/criacao_base.png?raw=true" style="width: 500px;"/>
-
 
  <div>
       <div align="center">
@@ -73,9 +70,6 @@ A partir disso, é possível executar o processo de recovery e obter uma base pr
 
 <br>
 
-
-
-<br>
 
 <div align="center">
 
@@ -87,6 +81,70 @@ A partir disso, é possível executar o processo de recovery e obter uma base pr
 
 <img src="https://github.com/pedrohelias/dataBase_studies/blob/main/imagens/recovery_backup_in_mysql/exec_recovery.png?raw=true" style="width: 500px;"/>
 
+ <div>
+      <div align="center">
+      <b>Fonte: </b> Própria Autoria.
+      </div>
+   </div>
+</div>
+
+<br>
+
+Após esses passos iniciais, será verificada a inserção de dados nessa nova base.
+
+## 2.3 Insert
+
+Para exemplificação dessa parte do projeto, serão adicionadas informações fictícias e aleatórias (respeitando as regras de negócio da estrutura previamente construída no banco) a respeito do jogo <i>Rainbow Six</i>. Para se obter as regras de negócio de cada tabela do banco de dados, basta verificar suas informações e metadados. Os inserts são demonstrados abaixo:
+
+(Inserir Imagens)
+
+<br>
+
+<div align="center">
+
+ <div>
+      <div align="center">
+      <b>Figura 3: </b>Inserts nas tabelas. 
+      </div>
+   </div>
+
+<img src="https://github.com/pedrohelias/dataBase_studies/blob/main/imagens/recovery_backup_in_mysql/script_insert.png?raw=true" style="width: 500px;"/>
+
+ <div>
+      <div align="center">
+      <b>Fonte: </b> Própria Autoria.
+      </div>
+   </div>
+</div>
+
+<br>
+
+Vale lembrar que, devido as regras de negócio das tabelas, faz-se necessário preencher outras tabelas com o foco de propor os inserts na tabela GAME, pelo fato de alguns atributos se tratarem de chave estrangeira.
+
+## 2.4 Processo de Backup da Base
+
+Em posse de uma nova base de dados alterada, será realizado o <i>backup</i> dessa base para garantir a segurança do arquivo em qualquer caso de perda de dados ou dados corrompidos. 
+
+Para a realização do <i>backup</i>, será utilizado o <b>mysqldump</b>. A estrutura do comando seguea a baixo:
+
+```
+mysqldump -u root -p base-utilizada > nome-do-arquivo.sql
+
+```
+
+A partir desse ponto, construímos o <i>backup</i> da base de dados criada que foi utilizada neste projeto.
+
+<br>
+
+<div align="center">
+
+ <div>
+      <div align="center">
+      <b>Figura 3: </b>Backup da base de dados. 
+      </div>
+   </div>
+
+<img src="https://github.com/pedrohelias/dataBase_studies/blob/main/imagens/recovery_backup_in_mysql/mysqldump_backup.png?raw=true" style="width: 500px;"/>
 
  <div>
       <div align="center">
@@ -98,13 +156,4 @@ A partir disso, é possível executar o processo de recovery e obter uma base pr
 <br>
 
 
-Após esses passos iniciais, será verificada a inserção de dados nessa nova base.  
-
-## 2.3 Insert
-
-Para exemplificação dessa parte do projeto, serão adicionadas informações fictícias e aleatórias (respeitando as regras de negócio da estrutura previamente construída no banco) a respeito do jogo <i>Rainbow Six</i>. Para se obter as regras de negócio de cada tabela do banco de dados, basta verificar suas informações e metadados. Os inserts são demonstrados abaixo:
-
-
-(Inserir Imagens)
-
-## 2.4 Processo de Backup da Base
+Após isso foi realizado o comando para listar as bases existentes neste projeto, o <i>ls</i>, garantindo assim o funcionamento e armazenamento do <i>backup</i>. 
