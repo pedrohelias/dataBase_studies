@@ -75,6 +75,20 @@ SELECT nome_da_coluna
 FROM nome_da_tabela
 WHERE name LIKE '%fabet%'
 
+----------------------------------------------------------------------------------------------------------
+
+MIN MAX SUM AVG
+São funções utilizadas para agregação. Essas funções agregam ou combinam dados de uma tabela em um resultado só. As funções são alto explicativas
+
+----------------------------------------------------------------------------------------------------------
+
+o AS vai apelidar a coluna criada na query
+
+----------------------------------------------------------------------------------------------------------
+
+o GROUP BY divide o resultado da pesquisa em grupos
+
+----------------------------------------------------------------------------------------------------------
 
 */
 
@@ -185,6 +199,42 @@ SELECT count(name)
 FROM GAME
 WHERE critic_score >= 97;
 
+/*Selecionando o total de rendimento em vendas de jogo no mercado japones eno ano de 2012*/
+
+SELECT sum(jp_sales) AS "Total em 2012" /*com o AS no query para apelidar a coluna */
+FROM GAME
+WHERE year_of_release = 2012; 
+
+/*selecionado o jogo com pior nota em 2012*/
+SELECT MIN(critic_score) AS "pior jogo em 2012"
+FROM GAME
+WHERE year_of_release = 2012; 
+
+/*somando o total de vendas para todos os jogos de 2012 e os ordenando por nome - nome é uma espécie de ID, vai somar tudo de todas aparições do ID na tabela. Se eu tenho 3 versões diferentes de COD para 3 consoles, vai somar as vendas de todas as versões*/
+
+SELECT name, sum(na_sales + eu_sales + jp_sales + other_sales) AS "TOTAL", year_of_release
+FROM GAME
+WHERE year_of_release = 2012
+GROUP BY name;
+
+/*seleciona quantas veszes o jogo Call of Duty aparece na tabela GAME*/
+
+SELECT name, COUNT(name) AS "quantas vezes aparece"
+FROM GAME
+WHERE name = 'Call of Duty: Black Ops II';
+
+/*seleciona quantas vezes se repetiu o jogo na tabela.*/
+
+SELECT name, COUNT(name) AS "quantas vezes aparece"
+FROM GAME
+WHERE year_of_release = 2012
+GROUP BY name;
+
+/*A quantidade de jogos lançados por desenvolvedora*/
+
+SELECT developer, COUNT(name)
+FROM GAME
+GROUP BY developer;
 
 /*
 A seleção abaixo é utilização quando não se inicia a base de dados a ser utilizada, como o 'use minhadatabase', como está sendo utilizado acima.
