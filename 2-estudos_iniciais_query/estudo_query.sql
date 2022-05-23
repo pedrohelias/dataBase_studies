@@ -90,6 +90,45 @@ o GROUP BY divide o resultado da pesquisa em grupos
 
 ----------------------------------------------------------------------------------------------------------
 
+o HAVING é utilizado juntamente(ou junção) do GROUP BY para filtrar os dados que já estão agrupados. Se o WHERE filtra dados que não estão agrupados, ou HAVING é um filtro um pouco mais profundo, funcionando em dados agrupados. Ex de aplicação:
+
+SELECT coluna1, funcaoAgregacao(coluna2)
+FROM nomeTabela
+GROUP BY coluna1
+HAVING condicao;
+
+
+----------------------------------------------------------------------------------------------------------
+
+JOINS: Unir informçaões de uma tabela com a outra. Utiliza-se de Chaves estrangeiras. Então o primeiro passo é encontrar uma columa em comum e realizar o join em cima dela, no caso a chave estrangeira
+Há 3 tipos de JOINS: INNER JOIN, OUTER JOIN e SELF-JOIN. 
+
+O USO DO AS COMO APELIDO NOS JOIN É OPCIONAL
+
+INNER-JOIN: JUNÇÂO DE INFORMAÇÔES EM COMUM
+
+SELECT C.ClienteID, C.Nome, E.Rua, E.Cidade
+FROM Cliente C
+INNER JOIN Endereco E on E.EnderecoID = C.EnderecoID
+
+OUTER-JOIN: Retorna um conjunto com todos os registros de uma tabela A e B quando são iguais, e além disso se não houver valores correspondentes, ele irá preencher como null. 
+
+SELECT * 
+FROM tabelaA
+FULL OUTER JOIN TabelaB ON TabelaA.nome = TabelaB.nome
+
+LEFT-JOIN
+----------------------------------------------------------------------------------------------------------
+O operador UNION permite com que seja combinado dois ou mais resultados de um select em um resultado apenas. O UNION remove as duplicatas. Ja o UNION ALL não remove. UNION geralmente é usado em tabelas que não tem muita consistencia. Te permite fazer pesquisas mais densas
+
+
+----------------------------------------------------------------------------------------------------------
+DATEPART (ajuda extrair dados do tipo TimeStamp, com datas)
+
+
+
+----------------------------------------------------------------------------------------------------------
+
 */
 
 /*selecionando apenas a coluna name da tabela GAME*/
@@ -236,7 +275,55 @@ SELECT developer, COUNT(name)
 FROM GAME
 GROUP BY developer;
 
+/*Selecionar a quantidade de jogos lançado por produtora que comça com as letras "co" em diante */
+SELECT developer, COUNT(name) AS 'quantidade'
+FROM GAME
+GROUP BY developer
+HAVING developer LIKE "co%"
+LIMIT 100;
+
+/*Verificar as empresas que lançaram mais de 50 jogos nesse espaço de tempo*/
+SELECT developer, COUNT(name) AS 'quantidade'
+FROM GAME
+GROUP BY developer
+HAVING COUNT(name) >=50
+LIMIT 100;
+
+/*Selecionando as produtoras que produziram entre 60 a 100 jogos nesse período, ordenado do maior para o menor*/
+SELECT developer, COUNT(name) AS 'quantidade'
+FROM GAME
+GROUP BY developer
+HAVING COUNT(name) between 60 AND 100
+ORDER BY COUNT(name) desc
+LIMIT 100;
+
+/*Realizando o Join entre tabelas, columa em comum: id_genre*/
+SELECT mg.name, mg.year_of_release, mge.description /*inicializando a base de dados posteiromente e colocando apelidos como mg e mge que serão descritos nas linhas abaixo*/
+FROM minhadatabase.GAME AS mg /*definido o apelido ou ALIAS de "minhadatabase.GAME" como mg*/
+INNER JOIN minhadatabase.GENRE AS mge on mge.id_genre = mg.id_genre; /*relizando o inner join entre a chave estrangeira presente nas duas tabelas, e juntamente a isso definido que "minhadatabase.GENRE" será descrita como mge. */
+
+/*Realizando a união de todas informações de uma tabela com outra tabela, sem definir colunas*/
+SELECT *
+FROM minhadatabase.GAME mg 
+INNER JOIN minhadatabase.GENRE mge on mge.id_genre = mg.id_genre
+LIMIT 100;
+
+
+/*Serão duas pesquisar realizadas numa mesma. Note que a tabela RATING naõ aparece lista como tabela, mas mostra dados onde deveria estar escrito year_of_release*/
+
+SELECT name, year_of_release
+FROM GAME
+WHERE name like "cal%"
+UNION
+SELECT name, rating
+FROM GAME
+WHERE name like "fif%";
+
+
+
 /*
+
+
 A seleção abaixo é utilização quando não se inicia a base de dados a ser utilizada, como o 'use minhadatabase', como está sendo utilizado acima.
 
 SELECT *
