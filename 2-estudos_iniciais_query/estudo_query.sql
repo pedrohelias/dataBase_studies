@@ -129,6 +129,52 @@ DATEPART (ajuda extrair dados do tipo TimeStamp, com datas)
 
 ----------------------------------------------------------------------------------------------------------
 
+Manipulando Strings
+
+Há diversas funções com strings que podem ser usadas com sql. 
+Concatenar -> CONCAT
+Tudo maiusculo -> UPPER
+Tudo minúsculo -> LOWER
+Descobrir o comprimento da string -> LEN
+Extrair um pedaço da string -> SUBSTRING
+Substituir partes de uma string
+----------------------------------------------------------------------------------------------------------
+
+Operações matemáticas. 
+Média - AVG
+valor maximo - MAX
+valor minimo - MIN
+arredondando - ROUND(coluna a ser arredondada, precisão)
+raiz - SQRT
+
+----------------------------------------------------------------------------------------------------------
+SELF-JOIN só é possivel ser utilizado usando o Alias com o AS. Comparar dentro da mesma tabela
+
+SELECT nome_coluna
+FROM tabela A, tabela B
+WHERE condicacao
+----------------------------------------------------------------------------------------------------------
+
+Tipos de dados: 
+Booleanos -> iniciado como nulo, por default. Pode receber tanto 1 quanto 0
+Caractere -> Tamanho fixo de caracteres, queremos utilizar o tipo char. Independente se for usado a quantidade definida de caracteres, ou não, ele vai usar o espaço definio. Difernetemente do VARCHAR que vai economizar os espaços que nao foram preenchidos, utilizando apenas o que foi preenchido. 
+Numeros -> TINYINT - não tem valores fracionados, apenas valores inteiros
+		-> SMALLINT - não tem valores fracionados, mas com limite maior
+        -> INT - Não tem valores fracionados, porém com limite maior
+		-> BIGINT - mesma coisa.
+        -> NUMERIC OU DECIMAL -> Valores exatos, com valores fracionados, com precisão e escala.
+        
+Valores aproximados -> REAL - aproximadamente 15 digitos (numeros apos a virgula)
+					-> FLOAT - mesmo conceito do real
+                    
+Temporais			-> DATE - Armazena data em formato de ano, mês e dia
+					-> DATETIME - armaezna data e tempo no formato, ano/ mes/ dia :h/min/s
+                    -> DATETIME2 - mesmo do DATETIME com milisegundos
+                    -> SMALLDATETIME. possui um certo limite
+                    -> TIME - Armazena apenas tempo. 
+                    -> DATETIMEOFFSET -> Data com fuso horário
+                    
+----------------------------------------------------------------------------------------------------------
 */
 
 /*selecionando apenas a coluna name da tabela GAME*/
@@ -319,9 +365,45 @@ SELECT name, rating
 FROM GAME
 WHERE name like "fif%";
 
+/*Concatenando o nome + o ano de lançamento do jogo*/
+SELECT CONCAT(name, '-',year_of_release)
+FROM GAME
+WHERE name like "Cal%"
+LIMIT 100;
+
+/*Reestruturando uma forma de apresentação de produtora + jogo*/
+SELECT CONCAT(UPPER(developer), "'s ", name )
+FROM GAME
+WHERE name like "Cal%"
+LIMIT 100;
+
+/*Substituindo o T por Teen na estrutura a seguir, e colocando-as lado a lado*/
+SELECT name, rating, REPLACE(rating, 'T', 'Teen') as 'coluna modificada'
+FROM GAME
+WHERE name like "Cal%"
+LIMIT 100;
+
+/*Vai selecionar nomes de jogos que fazem parte da mesma produtora*/
+
+SELECT A.name, A.developer, B.name, B.developer
+FROM minhadatabase.GAME A, minhadatabase.GAME B
+WHERE A.developer = B.developer
+LIMIT 100;
+
+/*Saber nome e nota de jogos que foram lançados no mesmo ano*/
+SELECT A.name, A.rating, B.name, B.rating, A.year_of_release, B.year_of_release
+FROM minhadatabase.GAME A, minhadatabase.GAME B
+WHERE A.year_of_release = B.year_of_release
+LIMIT 100;
+
+/*Saber quais jogos tem uma mesma nota*/
+SELECT A.name, A.critic_score, B.name, B.critic_score
+FROM minhadatabase.GAME A, minhadatabase.GAME B
+WHERE A.critic_score = B.critic_score;
 
 
 /*
+
 
 
 A seleção abaixo é utilização quando não se inicia a base de dados a ser utilizada, como o 'use minhadatabase', como está sendo utilizado acima.
